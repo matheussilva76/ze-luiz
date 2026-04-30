@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import pandas_ta as ta
+from ta.trend import ADXIndicator
 
 
 def calcular_indicadores(df: pd.DataFrame) -> pd.DataFrame:
@@ -10,7 +10,8 @@ def calcular_indicadores(df: pd.DataFrame) -> pd.DataFrame:
     df["SMA_20"] = df["Close"].rolling(window=20).mean()
     df["SMA_200"] = df["Close"].rolling(window=200).mean()
 
-    df.ta.adx(length=14, append=True)
+    adx = ADXIndicator(df["High"], df["Low"], df["Close"], window=14, fillna=False)
+    df["ADX_14"] = adx.adx()
 
     df["Retorno_Bruto"] = np.log(df["Close"] / df["Close"].shift(1)) * 100
     df["Retorno_Overnight"] = 0.0
