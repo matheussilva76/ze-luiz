@@ -7,3 +7,6 @@ healthcheckPath = "/_stcore/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
+
+# Volume persistente: no Railway Dashboard adicione um Volume montado em /data
+# Variável de ambiente DB_PATH é opcional — default já aponta para /data/ze_luiz_resultados.db

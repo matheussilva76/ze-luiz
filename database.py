@@ -1,9 +1,11 @@
+import os
 import sqlite3
 import json
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = Path("ze_luiz_resultados.db")
+_default_db = Path("/data/ze_luiz_resultados.db")
+DB_PATH = Path(os.getenv("DB_PATH", str(_default_db)))
 
 
 def _conn():

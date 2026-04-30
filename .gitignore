@@ -1,10 +1,35 @@
+# Python
 __pycache__/
 *.py[cod]
-*.db
-.env
-.venv/
-venv/
+*.pyo
 *.egg-info/
 dist/
 build/
+
+# Banco de dados local
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Segredos e ambiente
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Sistema operacional
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
