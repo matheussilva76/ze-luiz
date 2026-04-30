@@ -10,18 +10,28 @@ def detect_pip(ticker: str):
 
 def baixar_dados(ticker: str) -> pd.DataFrame:
     pip_size, valor_pip = detect_pip(ticker)
-    df = yf.download(ticker, period="2y", interval="1h", progress=False)
+    df = yf.download(ticker, period="2y", interval="1h", progress=False, auto_adjust=True)
 
     if df.empty:
-        raise ValueError(f"Sem dados para {ticker}. Verifique o ticker.")
+        raise ValueError(f"Sem dados para {ticker}. Verifique o ticker ou tente novamente.")
 
+    # Achata MultiIndex independente da ordem dos níveis
     if isinstance(df.columns, pd.MultiIndex):
-        df.columns = df.columns.get_level_values(0)
+        level_values = [df.columns.get_level_values(i) for i in range(df.columns.nlevels)]
+        ohlcv = {"Open", "High", "Low", "Close", "Volume"}
+        for lv in level_values:
+            if ohlcv.intersection(set(lv)):
+                df.columns = lv
+                break
 
     if "Volume" in df.columns:
         df.rename(columns={"Volume": "Tick_Volume"}, inplace=True)
 
-    df.dropna(subset=["Close"], inplace=True)
+    df.dropna(subset=["Open", "High", "Low", "Close"], inplace=True)
+
+    if df.empty:
+        raise ValueError(f"Dados vazios após limpeza para {ticker}.")
+
     df.attrs["pip_size"] = pip_size
     df.attrs["valor_pip"] = valor_pip
     df.attrs["ticker"] = ticker
