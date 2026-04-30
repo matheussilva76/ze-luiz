@@ -10,7 +10,7 @@ def detect_pip(ticker: str):
 
 def baixar_dados(ticker: str) -> pd.DataFrame:
     pip_size, valor_pip = detect_pip(ticker)
-    df = yf.download(ticker, period="730d", interval="1h", progress=False)
+    df = yf.download(ticker, period="2y", interval="1h", progress=False)
 
     if df.empty:
         raise ValueError(f"Sem dados para {ticker}. Verifique o ticker.")
